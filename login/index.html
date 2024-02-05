@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <title>About| All Nails Studio</title>
+		<meta charset="utf-8">
+		<script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+		<link rel="stylesheet" type="text/css" href="../assets/css/main.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="keywords" content="nail salon, Dublin, nail extensions, gel nails, nail design, manicure, pedicure, nails studio">
+		<link rel="icon" type="image/png" href="../assets/images/favicon-32x32.png">
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }
+    
+            .container {
+                width: 40%;
+                margin: auto;
+                background-color: #fdf7f8;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+                margin-top: 100px;
+                position: relative;
+            }
+    
+            h2 {
+                text-align: center;
+                color: #333;
+                margin-bottom: 15px;
+            }
+    
+            .tab {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+    
+            .tab button {
+                padding: 10px;
+                width: 48%;
+                border: none;
+                cursor: pointer;
+                border-radius: 4px;
+                font-size: 16px;
+                background-color: #7c7b7b;
+                color: white;
+            }
+    
+            .tab button:hover {
+                background-color: #666666;
+            }
+    
+            .form-section {
+                display: none;
+            }
+    
+            .form-section.active {
+                display: block;
+            }
+    
+            label {
+                display: block;
+                margin-bottom: 8px;
+                color: #333;
+            }
+    
+            input,
+            select,
+            date {
+                width: calc(100% - 16px);
+                padding: 10px;
+                margin-bottom: 16px;
+                box-sizing: border-box;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 16px;
+                 
+            }
+
+    
+            input[type="submit"] {
+                background-color: #7c7b7b;
+                color: white;
+                cursor: pointer;
+                margin-top: 5px;
+            }
+    
+            .error-message {
+                color: red;
+                margin-top: 40px;
+                
+                text-align: center;
+                font-size: 14px;
+                position:absolute;
+                width: 100%;
+                left: 0;
+            }
+
+            
+  
+
+                 
+                
+
+            
+        </style>
+
+
+
+
+</head>
+<body>
+    <div id="wrapper">
+        <header>
+            <nav>
+                <div class="narrow-menu-outer">
+                    <div class="narrow-menu">
+                <span id="narrow-menu-title">
+                <i class="fas fa-bars"></i>
+                        </span>
+            <ul class="nav-links">
+            <a href="../index.html">
+            <li class="nav-link-buttons">Home</li>
+            </a>
+            <a href="../services/index.html">
+            <li class="nav-link-buttons">Services</li>
+            </a>
+            <a href="../team/index.html">
+            <li class="nav-link-buttons">Our team</li>
+                    </a>
+
+            <a href="../book/index.html">
+            <li class="nav-link-buttons">Booking</li>
+                  </a>
+            <a href="index.html">
+            <li class="nav-link-buttons">Login</li>
+                    </a>                    
+                    
+                    </ul>
+                    </div>
+                </div>
+
+            <ul class="nav-links hide-nav">
+            <a href="../index.html">
+
+            <li class="nav-link-active">Home</li></a>
+                <a href="../services/index.html">
+                <li class="nav-link-buttons">Services</li>
+                    </a>
+
+            <a href="../team/index.html">
+            <li class="nav-link-buttons">Our team</li>
+                    </a>
+
+            <a href="../book/index.html">
+            <li class="nav-link-buttons">Booking</li>
+                    </a>
+            <a href="index.html">
+            <li class="nav-link-buttons">Login</li>
+                    </a>         
+
+                </ul>
+            </nav>
+        </header>
+        
+
+
+
+        <div class="container">
+            <h2>Welcome to Nails Studio</h2>
+        
+            <div class="tab">
+                <button onclick="changeForm('register')">Join</button>
+                <button onclick="changeForm('login')">Sign In</button>
+            </div>
+        
+            <!-- Registration Form -->
+            <div id="registerForm" class="form-section active">
+                <form name="registrationForm" onsubmit="return validateForm()">
+                    <label for="registerEmail">Email:</label>
+                    <input type="text" id="registerEmail" name="registerEmail">
+                    <small class="error-message" id="errorEmail"></small>
+
+                    <label for="registerPassword">Password:</label>
+                    <input type="password" id="registerPassword" name="registerPassword">
+                    <small class="error-message" id="errorPassword"></small>
+                    
+                    
+                    
+
+                    <label for="registerConfirmPassword">Confirm Password:</label>
+                    <input type="password" id="registerConfirmPassword" name="registerConfirmPassword">
+                    <small class="error-message" id="errorConfirmPassword"></small>
+                    
+
+                    <label for="number">Phone number :</label>
+                    <input type="text" id="number" name="phone" placeholder="">
+                    <small class="error-message" id="errorPhoneNumber"></small>
+
+                    <label for="registerGender">Gender:</label>
+                    <select id="registerGender" name="registerGender">
+                        <option value=""></option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <small class="error-message" id="errorGender"></small>
+
+                    <label for="registerDob">Date of Birth:</label>
+                    <input type="date" id="registerDob" name="registerDob" >
+                    <small class="error-message" id="errorDob"></small>
+
+                    <input type="submit" value="Join">
+                    <small class="error-message" id="errorAllFields"></small>
+                </form>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="form-section">
+                <form name="loginForm" onsubmit="return validateLoginForm()">
+                    <label for="loginEmail">Email:</label>
+                    <input type="text" id="loginEmail" name="loginEmail">
+                    <p class="error-message" id="errorLoginEmail"></p>
+
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="loginPassword" >
+                    <p class="error-message" id="errorLoginPassword"></p>
+
+                    <input type="submit" value="Sign In">
+
+                </form>
+            </div>
+
+        </div>
+    </div>  
+
+
+
+
+<footer>
+	<ul class="footer-buttons">
+		<a href="index.html">
+		<li>About</li>
+		</a>
+		<a href="../contact/index.html">
+		<li>Contact</li>
+		</a>
+		</ul> 
+    <div class="copyrights">&copy; 2023 All rights reserved by All Nails | Nail Studio</div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="../assets/js/script.js"></script>
+
+</body>
+
+</html>
