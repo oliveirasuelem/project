@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Nails</title>
+  <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
+    integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/cart.css">
+  <script src="../js/productService.js"></script>
+  <script src="./js/index.js" defer></script>
+  <script src="./js/cartService.js" defer></script>
+
+  <link rel="icon" type="image/png" href="/public/images/favicon-32x32.png">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
+    integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc"
+    crossorigin="anonymous"></script>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <style>
+    /* Add your custom styles here */
+    .product-image {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .related-list {
+      margin-top: 30px;
+    }
+
+    .navbar-light-pink {
+      background-color: #FFD1DC;
+      /* Light pink color */
+    }
+
+    .basket-btn {
+      background-color: transparent;
+      /* Remove background color */
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      margin-left: 20px;
+      /* Increase the distance from the dropdown */
+    }
+
+    .basket-icon {
+      font-size: 1.2em;
+      margin-right: 10px;
+    }
+
+    .dropdown.show .btn-secondary {
+      background-color: transparent;
+      /* Remove background color */
+      color: #333;
+    }
+
+    /* Add margin to the right of the search button */
+    .input-group-append {
+      margin-right: 10px;
+    }
+
+    /* Change search button color on hover to gray */
+    .btn-outline-success:hover {
+      color: #495057;
+      background-color: #e9ecef;
+      border-color: #e9ecef;
+    }
+
+    .btn-outline-success {
+      border-color: #333f;
+      color: #333f;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-light-pink">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/services">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../catalogue.html">Shop</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/booking">Booking</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/team">Our team</a>
+          </li>
+        </ul>
+      </div>
+
+      <form class="form-inline my-2 my-lg-0">
+        <div class="input-group">
+          <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="dropdown show">
+        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Hello, sign in
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="/login">Sign in</a>
+
+        </div>
+      </div>
+
+      <div class="basket">
+        <a href="cart.html"></a>
+        <button class="basket-btn">
+          <a class="basket-icon" href="cart.html">&#x1F6D2;<span id="cart-counter">0</span> </a>
+          <a class="nav-link" href="cart.html">Basket</a>
+        </button>
+
+      </div>
+    </nav>
+  </header>
+  <div class="container mt-5">
+    <h1 class="mb-4">Nail Strengthener</h1>
+    <div class="row">
+      <div class="col-md-6">
+        <img src="../img/products/4.jpg" alt="Product Image" class="img-fluid product-image">
+      </div>
+      <div class="col-md-6">
+        <h2 class="mb-3">$8.00
+        </h2>
+        <p>Description of the product goes here. Provide details about the product, its features, and any
+          other relevant information.</p>
+
+        <div class="d-flex">
+          <div class="color-box" style="background-color: #ff0000;"></div>
+          <div class="color-box" style="background-color: #00ff00;"></div>
+          <div class="color-box" style="background-color: #0000ff;"></div>
+        </div>
+        <!-- <div class="mt-4">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" min="1" value="1"
+                            class="form-control w-25">
+                    </div> -->
+        <!-- <button type="button" class="btn btn-primary mt-3">Add to Cart</button>
+                </div> -->
+      </div>
+      <!-- Related List and Additional Information Tabs -->
+      <div class="related-list mt-5">
+        <ul class="nav nav-tabs" id="productTabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="related-tab" data-toggle="tab" href="#related" role="tab"
+              aria-controls="related" aria-selected="true">Related</a>
+          </li>
+          <!-- <li class="nav-item">
+                        <a class="nav-link" id="additional-info-tab" data-toggle="tab" href="#additional-info"
+                            role="tab" aria-controls="additional-info" aria-selected="false">Additional
+                            Information</a>
+                    </li> -->
+        </ul>
+        <div class="tab-content mt-3">
+          <!-- Related Tab Content -->
+          <div class="tab-pane fade show active" id="related" role="tabpanel" aria-labelledby="related-tab">
+            <!-- Remove the extra <p> tag here -->
+            <h2>Description</h2>
+            <p>
+              Deeply penetrating natural oil for excellent moisturising and conditioning of your nails.
+              Contains Jojoba Oil, Vitamin E, Sweet Almond Oil, Rice Bran Oil, Parfum and Tocopheryl Acetate.
+              Build this into your daily routine by applying to your nails and skin morning and night.
+            </p>
+          </div>
+          <!-- Additional Information Tab Content -->
+          <div class="tab-pane fade" id="additional-info" role="tabpanel" aria-labelledby="additional-info-tab">
+            <p>Additional information about the product goes here. Include any specifications, technical
+              details, or other relevant details.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <ul class="footer-buttons">
+        <a href="/about">
+          <ul>About</ul>
+        </a>
+        <a href="/contact">
+          <ul>Contact</ul>
+        </a>
+      </ul>
+      <div class="copyrights">&copy; 2023 All rights reserved by All Nails | Nail Studio</div>
+    </footer>
+  </div>
+  <!-- Bootstrap JS and Popper.js (Optional, but required for some Bootstrap components) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- Your custom scripts if needed -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="../js/main.js"></script>
+  <script>function goToBasket() {
+      window.location.href = "/basket";
+    }
+  </script>
+</body>
+
+</html>

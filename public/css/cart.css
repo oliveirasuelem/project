@@ -1,0 +1,50 @@
+#product-container{
+  width: 800px;
+  margin: auto;
+  
+  }
+  .product-card{  
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      text-wrap:wrap ;
+      text-align: start;
+  }
+  .product-card img{
+      width: 10%;
+      height: 10%;    
+      object-fit: cover;
+      
+  }
+  .product-card h3{
+      width: 250px;
+      align-items: center;
+      
+  }
+  .product-card h4{
+      width: 100px;
+      align-items: center;
+      
+  }
+  .card-button{
+      background-color:rgba(155, 11, 107, 0.918);
+      color: rgb(243, 241, 241);
+      border-radius: 50px;
+      cursor: pointer;
+      margin: 2px;
+      height: 30%;
+      width: 30%;
+   
+  }
+  #total-cart, #empty-basket{
+      width: 800px; /* Same width as product container */
+      margin: auto; /* Center horizontally */
+      text-align: center; /* Center text */
+      font-weight: bold;
+      display: flex; /* Use flexbox for alignment */
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center items horizontally */
+      gap: 5px; /* Add space between items */
+     
+    
+  }

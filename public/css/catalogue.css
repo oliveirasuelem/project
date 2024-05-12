@@ -1,0 +1,53 @@
+#product-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: auto;
+    max-width : 1500px;
+    padding: 40px;
+    align-content: center;
+}
+
+.product-card{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    max-width:250px;
+    text-align: center;
+    background-color:#FFD1DC;
+    padding: 10px;
+    box-shadow:0 0 6px rgba(22, 22, 22, 0.438) ;
+    transition: 200ms;
+}
+
+.product-card:hover{
+    translate: 0 -10px;
+    box-shadow:0 10px 6px rgba(22, 22, 22, 0.438) ;
+}
+
+.product-card img{
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+    
+}
+
+/* add to maun CSS? or will ir screw the whole page?*/
+h3,p{
+    margin: 1px,0;
+}
+
+.card-button{
+    background-color:rgba(155, 11, 107, 0.918);
+    color: rgb(243, 241, 241);
+    border: unset;  
+    padding: 5px 10px;
+    border-radius: 70px;
+    cursor: pointer;
+    margin: 3px;
+
+}
+.basket-btn {
+    border: none;
+    background-color: transparent; /* Set background color to transparent */
+}

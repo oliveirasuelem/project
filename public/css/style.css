@@ -1,0 +1,140 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .navbar {
+    position: fixed;
+    width: 100%; /*add to main css*/
+    height: 70px;
+    z-index: 1000;
+  }
+
+  .navbar-light-pink {
+    min-height: 50px; /* Adjust the height as needed */
+    line-height: 100%; /* Adjust the line height as needed */
+    background-color: #FFD1DC; /* Light pink color */
+  }
+
+  .navbar-light-pink .navbar-nav .nav-link {
+    padding-top: 10px; /* Adjust the padding as needed */
+    padding-bottom: 10px; /* Adjust the padding as needed */
+  }
+
+  .navbar-light-pink .navbar-toggler-icon {
+    background-color: #333f !important;
+  }
+
+  .container {
+    margin-top: 60px; /* Adjust the margin-top to accommodate the fixed navbar */
+  }
+
+  .basket-btn {
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    /* need to update in main  */
+    font-size: large;
+    font-weight: 500;
+    
+  }
+
+  .basket-icon {
+    font-size: 1.2em;
+    margin-right: 10px;
+    
+  }
+  /*add to main css*/
+#cart-counter{
+    background-color:darkmagenta ;
+    border-radius: 100%;
+    display: inline-block;
+    width: 25px;
+    line-height: 25px;
+    text-align: center;
+    aspect-ratio: 1;
+    color: #e9ecef;
+
+    }
+/*end add to main css*/
+  .dropdown.show .btn-secondary {
+    background-color: transparent;
+    color: #333;
+  }
+
+  .input-group-append {
+    margin-right: 10px;
+  }
+
+  .btn-outline-success:hover {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #e9ecef;
+  }
+
+  .btn-outline-success {
+    border-color: #333f;
+    color: #333f;
+  }
+
+  /*footer*/
+
+footer {
+  background-color: #f9f9f9;
+  padding: 20px;
+  text-align: center;
+  margin-top: auto;
+
+}
+
+.footer-buttons {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.footer-buttons a {
+  text-decoration: none;
+  color: #006400;
+  margin: 5px;
+}
+
+.footer-buttons a:hover {
+  text-decoration: underline;
+}
+
+.footer-buttons ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.footer-buttons ul:hover {
+  cursor: pointer;
+}
+
+.footer-buttons li {
+  display: inline;
+  margin: 5px;
+}
+
+.copyrights {
+  font-size: 14px;
+  color: #888;
+}
+
+/* add to main style.css */
+
+.hide{ 
+  display: none;
+}
