@@ -24,7 +24,7 @@ function generateToken() {
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Manotas.78',
+    password: 'password',
     database: 'Project'
   });
 
