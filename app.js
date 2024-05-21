@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2/promise');
 const { check, validationResult } = require('express-validator');
+const methodOverride = require('method-override');
 
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
@@ -20,11 +21,12 @@ function generateToken() {
     return crypto.randomBytes(32).toString('hex'); // Function generating a random token
 }
 
+app.use(methodOverride('_method'));
 
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Manotas.78',
+    password: 'password',
     database: 'Project'
   });
 
@@ -41,7 +43,7 @@ app.use(express.json());
 app.use(
     cors({
         origin:["http://localhost:3000"],
-        methods: ["GET", "POST"],
+        methods: ["GET", "POST", "DELETE", "EDIT"],
         Credential: true,
     })
 );
@@ -100,6 +102,116 @@ app.get('/booking', (req, res) => {
     res.render('booking/booking', { loginUsername });
 });
 
+//CRUD
+// Route to fetch products and render admin page
+app.get('/admin/products', async (req, res) => {
+    const loginUsername = req.session.user ? req.session.user.username : null;
+    try {
+        const [products] = await connection.execute('SELECT * FROM products'); // Fetch all products from the database
+        res.render('admin/products', { products, loginUsername });
+    } catch (err) {
+        console.error('Error fetching products:', err); // Log the error details
+        res.status(500).send('Error fetching products');
+    }
+});
+
+// Route to render the create product form
+app.get('/admin/products/create', (req, res) => {
+    // Render the create product form
+    res.render('admin/create');
+});
+
+
+// Route to handle the creation of a new product
+app.post('/admin/create', async (req, res) => {
+    try {
+        const { name, description, price, urlImg, keywords } = req.body;
+
+              // Validate input (ensure all fields are provided)
+              if (!name || !description || !price || !urlImg || !keywords) {
+                return res.status(400).send('All fields are required');
+            }
+    
+  
+        // Insert the new product into the database
+        const [result] = await connection.execute(
+            'INSERT INTO products (name, description, price, urlImg, keywords) VALUES (?, ?, ?, ?, ?)',
+            [name, description, price, urlImg, keywords]
+        );
+
+        if (result.affectedRows > 0) {
+            // Product added successfully
+            res.redirect('/admin/products');
+        } else {
+            res.status(500).send('Failed to add product');
+        }
+    } catch (error) {
+        console.error('Error creating product:', error);
+        res.status(500).send('Error creating product');
+    }
+});
+
+  
+// Route to render the edit product form and pass the product data
+app.get('/admin/products/edit/:id', async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const [productRows] = await connection.execute('SELECT * FROM products WHERE id = ?', [productId]);
+        const product = productRows[0]; // Assuming there's only one product with this ID
+      
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+      
+        // Render the edit product form and pass the product data
+        res.render('admin/edit', { product });
+    } catch (err) {
+        console.error('Error fetching product:', err);
+        res.status(500).send('Error fetching product');
+    }
+});
+
+// Route to handle updating an existing product
+app.post('/admin/products/edit/:id', async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const { name, description, price, urlImg, keywords } = req.body;
+
+        // Perform the update operation in the database
+        const [result] = await connection.execute(
+            'UPDATE products SET name = ?, description = ?, price = ?, urlImg = ?, keywords = ? WHERE id = ?',
+            [name, description, price, urlImg, keywords, productId]
+        );
+
+        if (result.affectedRows > 0) {
+            // Product updated successfully
+            res.redirect('/admin/products');
+        } else {
+            res.status(500).send('Failed to update product');
+        }
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).send('Error updating product');
+    }
+});
+
+// Route to handle delete product
+
+app.delete('/admin/products/:id', async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const [result] = await connection.execute('DELETE FROM products WHERE id = ?', [productId]);
+
+        if (result.affectedRows > 0) {
+            res.redirect('/admin/products');
+        } else {
+            res.status(404).send('Product not found');
+        }
+    } catch (err) {
+        console.error('Error deleting product:', err);
+        res.status(500).send('Error deleting product');
+    }
+});
 
 app.get('/contact', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
@@ -444,8 +556,6 @@ app.get('/team', (req, res) => {
 app.get('*', (req, res) => {
     res.status(404).send('Resource not found');
 });
-
-
 
 
 const PORT = process.env.PORT || 3000;

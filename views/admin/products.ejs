@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - Products</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" 
+          integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/">Admin Portal</a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="/admin/products">Products</a>
+          </li>
+        </ul>
+      </div>
+      <div class="navbar-text">
+        <% if (loginUsername) { %>
+          Welcome, <%= loginUsername %>
+        <% } else { %>
+          <a class="nav-link" href="/login">Sign in</a>
+        <% } %>
+      </div>
+    </nav>
+  </header>
+  <main class="container mt-4">
+    <h1>Product Catalog</h1>
+    <a href="/admin/products/create" class="btn btn-success mb-3">Create New Product</a>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Image URL</th>
+          <th>Keywords</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% products.forEach(product => { %>
+          <tr>
+            <td><%= product.id %></td>
+            <td><%= product.name %></td>
+            <td><%= product.description %></td>
+            <td><%= product.price %></td>
+            <td><%= product.urlImg %></td>
+            <td><%= product.keywords %></td>
+            <td>
+              <!-- Edit Button -->
+              <a href="/admin/products/edit/<%= product.id %>" class="btn btn-primary">Edit</a>
+              
+              <!-- Delete Form -->
+              <form action="/admin/products/<%= product.id %>?_method=DELETE" method="POST" class="d-inline" onsubmit="return confirmDelete()">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </main>
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted">&copy; 2023 All rights reserved by All Nails | Nail Studio</span>
+    </div>
+  </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    function confirmDelete() {
+      return confirm('Are you sure you want to delete this?');
+    }
+  </script>
+</body>
+</html>
