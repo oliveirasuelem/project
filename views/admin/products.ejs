@@ -32,6 +32,10 @@
   <main class="container mt-4">
     <h1>Product Catalog</h1>
     <a href="/admin/products/create" class="btn btn-success mb-3">Create New Product</a>
+
+    <!-- Search Bar -->
+    <input type="text" id="searchBar" class="form-control mb-3" placeholder="Search products...">
+
     <table class="table table-striped">
       <thead>
         <tr>
@@ -44,7 +48,7 @@
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="productTableBody">
         <% products.forEach(product => { %>
           <tr>
             <td><%= product.id %></td>
@@ -80,6 +84,20 @@
     function confirmDelete() {
       return confirm('Are you sure you want to delete this?');
     }
+
+    document.getElementById('searchBar').addEventListener('input', function() {
+      var searchQuery = this.value.toLowerCase();
+      var tableRows = document.querySelectorAll('#productTableBody tr');
+
+      tableRows.forEach(function(row) {
+        var rowText = row.textContent.toLowerCase();
+        if (rowText.includes(searchQuery)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
   </script>
 </body>
 </html>

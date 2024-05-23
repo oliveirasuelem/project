@@ -331,7 +331,7 @@ app.post('/saveData', [
     try {
         // Check if username or email already exists in the database
         const [existingUsers] = await connection.execute(
-            `SELECT * FROM customers WHERE username = ? OR email = ?`,
+            `SELECT * FROM users WHERE username = ? OR email = ?`,
             [registerUsername, registerEmail]
         );
 
@@ -346,7 +346,7 @@ app.post('/saveData', [
         const hashedPassword = await bcrypt.hash(registerPassword, 20);
 
         // Insert new record
-        const insertQuery = `INSERT INTO customers (username, email, user_password, phone_number, gender, birth_date) VALUES (?, ?, ?, ?, ?, ?)`;
+        const insertQuery = `INSERT INTO users (username, email, user_password, phone_number, gender, birth_date) VALUES (?, ?, ?, ?, ?, ?)`;
         await connection.execute(insertQuery, [registerUsername, registerEmail, hashedPassword, phone, registerGender, registerDob]);
         
         console.log(`${registerUsername} Record inserted successfully`);
@@ -369,19 +369,19 @@ app.post('/saveData', [
 });
 
 
-
 app.post('/login', async (req, res) => {
     const { loginUsername, loginPassword } = req.body;
 
     try {
         // Fetch user data from the database based on the provided username
         const [rows] = await connection.execute(
-            "SELECT * FROM customers WHERE username = ?",
+            "SELECT * FROM users WHERE username = ?",
             [loginUsername]
         );
 
         // If no user found with the given username, return an error message
         if (rows.length === 0) {
+            console.error(`Login failed: User not found with username: ${loginUsername}`);
             return res.status(400).json({ error: 'User not found' });
         }
 
@@ -390,24 +390,25 @@ app.post('/login', async (req, res) => {
         // Compare the provided password with the hashed password stored in the database
         const passwordMatch = await bcrypt.compare(loginPassword, user.user_password);
 
-        req.session.user = rows[0];      //Create session
-        console.log(req.session.user);
-       
         // If passwords don't match, return an error message
         if (!passwordMatch) {
+            console.error(`Login failed: Invalid password for username: ${loginUsername}`);
             return res.status(400).json({ error: 'Invalid username/password combination' });
         }
-        console.log(`User ${user.username} logged in successfully:`, req.session.user); 
-        // If passwords match, login successful
-        
+
+        // Set up the session if login is successful
+        req.session.user = user;
+        console.log(`User ${user.username} logged in successfully`);
+
+        // Redirect to the welcome page with a welcome message
         req.session.welcomeMessage = `Welcome, ${loginUsername} to All Nails Studio!`;
-        
         res.redirect('/welcome');
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 // Create a Nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -470,7 +471,7 @@ app.post('/resetPassword', async (req, res) => {
             console.log("Password hashed successfully");
 
             // Perform database update operation to reset the password
-            const resetPasswordQuery = 'UPDATE customers SET user_password = ? WHERE email = ?';
+            const resetPasswordQuery = 'UPDATE users SET user_password = ? WHERE email = ?';
             const [result] = await connection.execute(resetPasswordQuery, [hashedPassword, email]);
 
             if (result.affectedRows > 0) {
