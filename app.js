@@ -6,14 +6,16 @@ const methodOverride = require('method-override');
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
-const app = express();
+
 const path = require('path');
 const bcrypt =  require('bcrypt');
 const { result } = require('lodash');
 const saltRounds = 10
 const cors = require('cors');
 const nodemailer = require('nodemailer');
-
+const app = express();
+const axios = require('axios');
+const qs = require('qs');
 
 const crypto = require('crypto');
 const passwordResetTokens = new Map();// Creating a map to store password reset tokens
@@ -21,7 +23,10 @@ function generateToken() {
     return crypto.randomBytes(32).toString('hex'); // Function generating a random token
 }
 
+require('dotenv').config();
 app.use(methodOverride('_method'));
+
+
 
 const connection = mysql.createPool({
     host: 'localhost',
@@ -213,6 +218,19 @@ app.delete('/admin/products/:id', async (req, res) => {
     }
 });
 
+// Route to render cases page
+app.get('/admin/cases', (req, res) => {
+    // Render the create product form
+    res.render('admin/cases');
+});
+
+
+app.get('/admin/cases', (req, res) => {
+    const welcomeMessage = req.session.welcomeMessage;
+
+    const loginUsername = req.session.user ? req.session.user.username : null;
+    res.render('/admin/cases', { welcomeMessage, loginUsername });
+});
 app.get('/contact', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
     res.render('contact/contact', { loginUsername });
@@ -548,6 +566,7 @@ app.get('/services', (req, res) => {
 });
 
 
+
 app.get('/team', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
     res.render('team/team', { loginUsername });
@@ -559,8 +578,9 @@ app.get('*', (req, res) => {
 });
 
 
+
+// Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-

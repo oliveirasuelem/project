@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Cases</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <style>
+        /* Custom CSS styles */
+        #casesContainer {
+            margin-top: 20px;
+        }
+        .comment-popup {
+            position: relative;
+            display: inline-block;
+        }
+
+        .comment-popup-content {
+            visibility: hidden;
+            width: 200px;
+            background-color: #f9f9f9;
+            color: black;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -100px;
+        }
+
+        .comment-popup:hover .comment-popup-content {
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Admin Portal</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/products">Products</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/admin/cases">Cases</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Cases</h1>
+        <!-- Filter by Status -->
+        <div class="form-group">
+            <label for="statusFilter">Filter by Status:</label>
+            <select class="form-control" id="statusFilter">
+                <option value="All">All</option>
+                <option value="New">New</option>
+                <option value="Waiting on Customer">Waiting on Customer</option>
+                <option value="Working">Working</option>
+                <option value="Closed">Closed</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+
+        <!-- Display Cases -->
+        <div id="casesContainer"></div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JavaScript -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to fetch cases from Salesforce
+            function fetchCases(statusFilter) {
+                var apiUrl = 'https://suelemoliv-240111-119-demo.my.salesforce.com/services/data/v52.0/query/?q=SELECT+Id,CaseNumber,Subject,Status,Priority,ContactId+FROM+Case';
+                // Modify the API URL to include status filter
+                if (statusFilter !== 'All') {
+                    // Handle spaces in status values
+                    statusFilter = statusFilter.replace(/ /g, '%20');
+                    apiUrl += '+WHERE+Status=\'' + statusFilter + '\'';
+                }
+                var accessToken = '00DHs000003VtG9!AR4AQMOOilVHMw8Toqhar7D1FqTuxSavzWget0qjGgK3pVvf0oWPOqDZzeeKt7ecDaTErlswS.6TtQrJ6qEuMXQgoZi_Ho6m';
+
+                $.ajax({
+                    url: apiUrl,
+                    type: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken
+                    },
+                    success: function(response) {
+                        displayCases(response.records);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching cases:', error);
+                    }
+                });
+            }
+
+            // Function to display cases
+            function displayCases(cases) {
+                var casesContainer = $('#casesContainer');
+                casesContainer.empty();
+
+                // Create table
+                var table = $('<table id="casesTable" class="table"></table>');
+                var thead = $('<thead></thead>').appendTo(table);
+                var tbody = $('<tbody></tbody>').appendTo(table);
+                var headers = ['Case Number', 'Subject', 'Status', 'Priority', 'Contact ID'];
+
+                // Create table headers
+                var headerRow = $('<tr></tr>').appendTo(thead);
+                headers.forEach(function(header) {
+                    $('<th></th>').text(header).appendTo(headerRow);
+                });
+
+                // Populate table body with case data
+                cases.forEach(function(caseItem) {
+                    var row = $('<tr></tr>').appendTo(tbody);
+                    var caseNumberCell = $('<td></td>').appendTo(row);
+                    // Make Case Number a hyperlink to Salesforce Case ID
+                    $('<a></a>')
+                        .text(caseItem.CaseNumber)
+                        .attr('href', 'https://suelemoliv-240111-119-demo.my.salesforce.com/' + caseItem.Id) // Replace 'your-salesforce-url.com' with your Salesforce URL
+                        .attr('target', '_blank') // Open in new tab
+                        .appendTo(caseNumberCell);
+                    $('<td></td>').text(caseItem.Subject).appendTo(row);
+                    $('<td></td>').text(caseItem.Status).appendTo(row);
+                    $('<td></td>').text(caseItem.Priority).appendTo(row);
+                    $('<td></td>').text(caseItem.ContactId).appendTo(row);
+
+                    // Add a tooltip to display the latest comment on hover
+                    var commentCell = $('<td class="comment-popup"></td>').appendTo(row);
+                    $('<span class="comment-popup-content"></span>').text("Latest comment: " + caseItem.LatestComment).appendTo(commentCell);
+                });
+
+                // Append table to container
+                casesContainer.append(table);
+                
+                // Initialize DataTable with sorting enabled
+                $('#casesTable').DataTable();
+
+            }
+
+            // Fetch cases initially
+            fetchCases('All');
+
+            // Listen for status filter changes
+            $('#statusFilter').change(function() {
+                var statusFilter = $(this).val();
+                fetchCases(statusFilter);
+            });
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+gbgEHEjH5Gt6z6nShjveqz3fF/Xqj28yRynfw1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
+
