@@ -2,6 +2,8 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 const { check, validationResult } = require('express-validator');
 const methodOverride = require('method-override');
+const https = require('https');
+const fs = require('fs');
 
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
@@ -42,6 +44,15 @@ connection.getConnection()
     process.exit(1);
   });
 
+// Read the SSL/TLS certificate and private key
+const options = {
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+  };
+  
+  // Create an HTTPS server with the provided options
+  const server = https.createServer(options, app);
+  
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
