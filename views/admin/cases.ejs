@@ -85,17 +85,22 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <script>
-        console.log('Document ready function starting.');
+        // Debugging step: Check if jQuery is loaded
+        if (window.jQuery) {
+            console.log("jQuery is loaded!");
+        } else {
+            console.log("jQuery is NOT loaded!");
+        }
+
         $(document).ready(function() {
-            console.log('jQuery is loaded and document is ready.');
+            console.log('Document is ready.');
 
             // Function to fetch cases from Salesforce
             function fetchCases(statusFilter) {
-                console.log('Fetching cases with status filter: ' + statusFilter);
+                console.log('Fetching cases with status filter:', statusFilter);
                 var apiUrl = 'https://suelemoliv-240111-119-demo.my.salesforce.com/services/data/v52.0/query/?q=SELECT+Id,CaseNumber,Subject,Status,Priority,ContactId+FROM+Case';
                 // Modify the API URL to include status filter
                 if (statusFilter !== 'All') {
-                    // Handle spaces in status values
                     statusFilter = statusFilter.replace(/ /g, '%20');
                     apiUrl += '+WHERE+Status=\'' + statusFilter + '\'';
                 }
@@ -122,23 +127,19 @@
                 var casesContainer = $('#casesContainer');
                 casesContainer.empty();
 
-                // Create table
                 var table = $('<table id="casesTable" class="table"></table>');
                 var thead = $('<thead></thead>').appendTo(table);
                 var tbody = $('<tbody></tbody>').appendTo(table);
                 var headers = ['Case Number', 'Subject', 'Status', 'Priority', 'Contact ID'];
 
-                // Create table headers
                 var headerRow = $('<tr></tr>').appendTo(thead);
                 headers.forEach(function(header) {
                     $('<th></th>').text(header).appendTo(headerRow);
                 });
 
-                // Populate table body with case data
                 cases.forEach(function(caseItem) {
                     var row = $('<tr></tr>').appendTo(tbody);
                     var caseNumberCell = $('<td></td>').appendTo(row);
-                    // Make Case Number a hyperlink to Salesforce Case ID
                     $('<a></a>')
                         .text(caseItem.CaseNumber)
                         .attr('href', 'https://suelemoliv-240111-119-demo.my.salesforce.com/' + caseItem.Id)
@@ -149,23 +150,18 @@
                     $('<td></td>').text(caseItem.Priority).appendTo(row);
                     $('<td></td>').text(caseItem.ContactId).appendTo(row);
 
-                    // Add a tooltip to display the latest comment on hover
                     var commentCell = $('<td class="comment-popup"></td>').appendTo(row);
                     $('<span class="comment-popup-content"></span>').text("Latest comment: " + caseItem.LatestComment).appendTo(commentCell);
                 });
 
-                // Append table to container
                 casesContainer.append(table);
-                
-                // Initialize DataTable with sorting enabled
+
                 console.log('Initializing DataTable.');
                 $('#casesTable').DataTable();
             }
 
-            // Fetch cases initially
             fetchCases('All');
 
-            // Listen for status filter changes
             $('#statusFilter').change(function() {
                 var statusFilter = $(this).val();
                 fetchCases(statusFilter);
