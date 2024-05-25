@@ -30,9 +30,9 @@ app.use(methodOverride('_method'));
 
 const connection = mysql.createPool({
     host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'Project'
+    user: 'web',
+    password: 'webPass',
+    database: 'project'
   });
 
 connection.getConnection()
