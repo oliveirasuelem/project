@@ -83,10 +83,15 @@
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
     <script>
+        console.log('Document ready function starting.');
         $(document).ready(function() {
+            console.log('jQuery is loaded and document is ready.');
+
             // Function to fetch cases from Salesforce
             function fetchCases(statusFilter) {
+                console.log('Fetching cases with status filter: ' + statusFilter);
                 var apiUrl = 'https://suelemoliv-240111-119-demo.my.salesforce.com/services/data/v52.0/query/?q=SELECT+Id,CaseNumber,Subject,Status,Priority,ContactId+FROM+Case';
                 // Modify the API URL to include status filter
                 if (statusFilter !== 'All') {
@@ -103,6 +108,7 @@
                         'Authorization': 'Bearer ' + accessToken
                     },
                     success: function(response) {
+                        console.log('Cases fetched successfully:', response);
                         displayCases(response.records);
                     },
                     error: function(xhr, status, error) {
@@ -135,8 +141,8 @@
                     // Make Case Number a hyperlink to Salesforce Case ID
                     $('<a></a>')
                         .text(caseItem.CaseNumber)
-                        .attr('href', 'https://suelemoliv-240111-119-demo.my.salesforce.com/' + caseItem.Id) // Replace 'your-salesforce-url.com' with your Salesforce URL
-                        .attr('target', '_blank') // Open in new tab
+                        .attr('href', 'https://suelemoliv-240111-119-demo.my.salesforce.com/' + caseItem.Id)
+                        .attr('target', '_blank')
                         .appendTo(caseNumberCell);
                     $('<td></td>').text(caseItem.Subject).appendTo(row);
                     $('<td></td>').text(caseItem.Status).appendTo(row);
@@ -152,6 +158,7 @@
                 casesContainer.append(table);
                 
                 // Initialize DataTable with sorting enabled
+                console.log('Initializing DataTable.');
                 $('#casesTable').DataTable();
             }
 
