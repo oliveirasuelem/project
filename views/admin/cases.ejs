@@ -36,6 +36,27 @@
 
     <h1>Cases</h1>
     <div class="container">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="statusFilter">Filter by Status:</label>
+                <select id="statusFilter" class="form-control">
+                    <option value="">All</option>
+                    <option value="Open">Open</option>
+                    <option value="Closed">Closed</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="priorityFilter">Filter by Priority:</label>
+                <select id="priorityFilter" class="form-control">
+                    <option value="">All</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+        </div>
         <table id="casesTable" class="table">
             <thead>
                 <tr>
@@ -66,10 +87,21 @@
     <!-- Include DataTables JavaScript -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <script>
-        // Initialize DataTable
         $(document).ready( function () {
-            $('#casesTable').DataTable();
-        });
-    </script>
+            // Initialize DataTable
+            var table = $('#casesTable').DataTable();
+
+            // Add event listener for status filter
+            $('#statusFilter').on('change', function () {
+                table.column(2).search(this.value).draw();
+            });
+
+            // Add event listener for priority filter
+            $('#priorityFilter').on('change', function () {
+                table.column(4).search(this.value).draw();
+});
+});
+</script>
+
 </body>
 </html>
