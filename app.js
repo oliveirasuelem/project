@@ -52,17 +52,22 @@ const options = {
   
   // Create an HTTPS server with the provided options
   const server = https.createServer(options, app);
-  
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// Your domain URL without the port
+const allowedOrigins = ["http://suelem.westeurope.cloudapp.azure.com"];
+
+// CORS configuration
 app.use(
     cors({
-        origin:["http://localhost:3000"],
-        methods: ["GET", "POST", "DELETE", "EDIT"],
-        Credential: true,
+        origin: allowedOrigins,
+        methods: ["GET", "POST", "DELETE", "PUT"],
+        credentials: true,
     })
 );
+
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true}));
 
