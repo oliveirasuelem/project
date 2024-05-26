@@ -57,7 +57,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Your domain URL without the port
-const allowedOrigins = ["http://suelem.westeurope.cloudapp.azure.com"];
+const allowedOrigins = ["http://suelem.westeurope.cloudapp.azure.com:3000/admin/cases"];
 
 // CORS configuration
 app.use(
