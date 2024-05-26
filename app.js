@@ -249,11 +249,12 @@ app.get('/admin/cases', async (req, res) => {
 
         // Make request to Salesforce API to fetch cases
         const cases = await conn.query("SELECT Id, CaseNumber, Subject, Status, Priority, ContactId FROM Case");
-
-        res.json(cases);
+        const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
+        
+        res.render('admin/cases', { cases: cases.records, loginUsername }); // Render the cases EJS template and pass the cases data
     } catch (error) {
         console.error('Error fetching cases:', error);
-        res.status(500).json({ error: 'An error occurred while fetching cases' });
+        res.status(500).send('An error occurred while fetching cases');
     }
 });
 
