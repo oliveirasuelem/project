@@ -235,6 +235,16 @@ app.get('/admin/cases', (req, res) => {
     // Render the create product form
     res.render('admin/cases');
 });
+// API endpoint to fetch cases from Salesforce
+app.get('/cases', async (req, res) => {
+    try {
+        const response = await axios.get('https://suelemoliv-240111-119-demo.my.salesforce.com/services/data/v52.0/query/?q=SELECT+Id,CaseNumber,Subject,Status,Priority,ContactId+FROM+Case');
+        res.json(response.data);
+    } catch (error) {
+        console.error('Error fetching cases:', error);
+        res.status(500).json({ error: 'An error occurred while fetching cases' });
+    }
+});
 
 
 app.get('/admin/cases', (req, res) => {
