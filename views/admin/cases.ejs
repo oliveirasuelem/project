@@ -1,144 +1,63 @@
+<!-- cases.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Display Cases</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-    <style>
-        /* Custom CSS styles */
-        #casesContainer {
-            margin-top: 20px;
-        }
-        .comment-popup {
-            position: relative;
-            display: inline-block;
-        }
-
-        .comment-popup-content {
-            visibility: hidden;
-            width: 200px;
-            background-color: #f9f9f9;
-            color: black;
-            text-align: center;
-            border-radius: 6px;
-            padding: 8px 0;
-            position: absolute;
-            z-index: 1;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -100px;
-        }
-
-        .comment-popup:hover .comment-popup-content {
-            visibility: visible;
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">Admin Portal</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/products">Products</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/admin/cases">Cases</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">Admin Portal</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/products">Products</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/cases">Cases</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar-text">
+                <% if (loginUsername) { %>
+                    Welcome, <%= loginUsername %>
+                <% } else { %>
+                    <a class="nav-link" href="/login">Sign in</a>
+                <% } %>
+            </div>
+        </nav>
+    </header>
 
-    <div class="container">
-        <h1>Cases</h1>
-        <!-- Filter by Status -->
-        <div class="form-group">
-            <label for="statusFilter">Filter by Status:</label>
-            <select class="form-control" id="statusFilter">
-                <option value="All">All</option>
-                <option value="New">New</option>
-                <option value="Waiting on Customer">Waiting on Customer</option>
-                <option value="Working">Working</option>
-                <option value="Closed">Closed</option>
-                <!-- Add more options as needed -->
-            </select>
-        </div>
+    <h1>Cases</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Case Number</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Contact ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% cases.forEach(function(caseItem) { %>
+                <tr>
+                    <td><%= caseItem.CaseNumber %></td>
+                    <td><%= caseItem.Subject %></td>
+                    <td><%= caseItem.Status %></td>
+                    <td><%= caseItem.Priority %></td>
+                    <td><%= caseItem.ContactId %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
 
-        <!-- Display Cases -->
-        <div id="casesContainer"></div>
-    </div>
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- DataTables JavaScript -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            // Function to fetch cases from Salesforce
-            function fetchCases(statusFilter) {
-                var apiUrl = '/admin/cases'; // Use your server route to fetch cases
-
-                $.ajax({
-                    url: apiUrl,
-                    type: 'GET',
-                    data: { statusFilter: statusFilter },
-                    success: function(response) {
-                        displayCases(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching cases:', error);
-                    }
-                });
-            }
-
-            // Function to display cases
-            function displayCases(cases) {
-                var casesContainer = $('#casesContainer');
-                casesContainer.empty();
-
-                var table = $('<table id="casesTable" class="table"></table>');
-                var thead = $('<thead></thead>').appendTo(table);
-                var tbody = $('<tbody></tbody>').appendTo(table);
-                var headers = ['Case Number', 'Subject', 'Status', 'Priority', 'Contact ID'];
-
-                var headerRow = $('<tr></tr>').appendTo(thead);
-                headers.forEach(function(header) {
-                    $('<th></th>').text(header).appendTo(headerRow);
-                });
-
-                cases.forEach(function(caseItem) {
-                    var row = $('<tr></tr>').appendTo(tbody);
-                    $('<td></td>').text(caseItem.CaseNumber).appendTo(row);
-                    $('<td></td>').text(caseItem.Subject).appendTo(row);
-                    $('<td></td>').text(caseItem.Status).appendTo(row);
-                    $('<td></td>').text(caseItem.Priority).appendTo(row);
-                    $('<td></td>').text(caseItem.ContactId).appendTo(row);
-                });
-
-                casesContainer.append(table);
-
-                $('#casesTable').DataTable(); // Initialize DataTables
-            }
-
-            $('#statusFilter').on('change', function() {
-                var selectedStatus = $(this).val();
-                fetchCases(selectedStatus);
-            });
-
-            fetchCases('All');
-        });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
