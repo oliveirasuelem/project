@@ -62,11 +62,6 @@ app.use(
 // Serve static files
 app.use(express.static('public'));
 
-// Define your routes and middleware as usual
-app.get('/', (req, res) => {
-    res.send('Hello, HTTP World!');
-});
-
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true}));
 
