@@ -252,7 +252,8 @@ app.get('/admin/cases', async (req, res) => {
 
         // Check if there are cases found
         if (cases && cases.records) {
-            res.json(cases.records); // Return the records array
+            // Render the cases.ejs template with the cases data
+            res.render('admin/cases', { cases: cases.records });
         } else {
             res.status(404).json({ error: 'No cases found' });
         }
