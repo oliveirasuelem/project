@@ -18,6 +18,7 @@ const nodemailer = require('nodemailer');
 const app = express();
 const axios = require('axios');
 const qs = require('qs');
+const salesforceAuth = require('./salesforceAuth');
 
 const crypto = require('crypto');
 const passwordResetTokens = new Map();// Creating a map to store password reset tokens
@@ -230,16 +231,29 @@ app.delete('/admin/products/:id', async (req, res) => {
     }
 });
 
-// Route to render cases page
-app.get('/admin/cases', (req, res) => {
-    // Render the create product form
-    res.render('admin/cases');
+// Middleware to handle CORS
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
 });
-// API endpoint to fetch cases from Salesforce
+
+// Route to fetch cases from Salesforce
 app.get('/cases', async (req, res) => {
     try {
-        const response = await axios.get('https://suelemoliv-240111-119-demo.my.salesforce.com/services/data/v52.0/query/?q=SELECT+Id,CaseNumber,Subject,Status,Priority,ContactId+FROM+Case');
-        res.json(response.data);
+        // Authenticate with Salesforce and obtain access token
+        const accessToken = await salesforceAuth();
+
+        // Create a Salesforce connection with the obtained access token
+        const conn = new jsforce.Connection({
+            accessToken: accessToken,
+            instanceUrl: process.env.SALESFORCE_URL,
+        });
+
+        // Make request to Salesforce API to fetch cases
+        const cases = await conn.query("SELECT Id, CaseNumber, Subject, Status, Priority, ContactId FROM Case");
+
+        res.json(cases);
     } catch (error) {
         console.error('Error fetching cases:', error);
         res.status(500).json({ error: 'An error occurred while fetching cases' });
