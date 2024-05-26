@@ -252,8 +252,9 @@ app.get('/admin/cases', async (req, res) => {
 
         // Check if there are cases found
         if (cases && cases.records) {
-            // Render the cases.ejs template with the cases data
-            res.render('admin/cases', { cases: cases.records });
+            // Render the cases.ejs template with the cases data and loginUsername
+            const loginUsername = req.session.user ? req.session.user.username : null;
+            res.render('admin/cases', { cases: cases.records, loginUsername: loginUsername });
         } else {
             res.status(404).json({ error: 'No cases found' });
         }
@@ -262,6 +263,7 @@ app.get('/admin/cases', async (req, res) => {
         res.status(500).json({ error: 'An error occurred while fetching cases' });
     }
 });
+
 
 
 app.get('/contact', (req, res) => {
