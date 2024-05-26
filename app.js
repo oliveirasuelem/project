@@ -19,6 +19,8 @@ const app = express();
 const axios = require('axios');
 const qs = require('qs');
 const salesforceAuth = require('./salesforceAuth');
+const jsforce = require('jsforce');
+
 
 const crypto = require('crypto');
 const passwordResetTokens = new Map();// Creating a map to store password reset tokens
