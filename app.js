@@ -257,13 +257,6 @@ app.get('/admin/cases', async (req, res) => {
     }
 });
 
-
-app.get('/admin/cases', (req, res) => {
-    const welcomeMessage = req.session.welcomeMessage;
-
-    const loginUsername = req.session.user ? req.session.user.username : null;
-    res.render('/admin/cases', { welcomeMessage, loginUsername });
-});
 app.get('/contact', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
     res.render('contact/contact', { loginUsername });
