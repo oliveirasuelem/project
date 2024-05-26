@@ -110,44 +110,35 @@
                     }
                 });
             }
+// Function to display cases
+function displayCases(cases) {
+    var casesContainer = $('#casesContainer');
+    casesContainer.empty();
 
-            // Function to display cases
-            function displayCases(cases) {
-                var casesContainer = $('#casesContainer');
-                casesContainer.empty();
+    var table = $('<table id="casesTable" class="table"></table>');
+    var thead = $('<thead></thead>').appendTo(table);
+    var tbody = $('<tbody></tbody>').appendTo(table);
+    var headers = ['Case Number', 'Subject', 'Status', 'Priority', 'Contact ID'];
 
-                var table = $('<table id="casesTable" class="table"></table>');
-                var thead = $('<thead></thead>').appendTo(table);
-                var tbody = $('<tbody></tbody>').appendTo(table);
-                var headers = ['Case Number', 'Subject', 'Status', 'Priority', 'Contact ID'];
+    var headerRow = $('<tr></tr>').appendTo(thead);
+    headers.forEach(function(header) {
+        $('<th></th>').text(header).appendTo(headerRow);
+    });
 
-                var headerRow = $('<tr></tr>').appendTo(thead);
-                headers.forEach(function(header) {
-                    $('<th></th>').text(header).appendTo(headerRow);
-                });
+    cases.forEach(function(caseItem) {
+        var row = $('<tr></tr>').appendTo(tbody);
+        $('<td></td>').text(caseItem.CaseNumber).appendTo(row);
+        $('<td></td>').text(caseItem.Subject).appendTo(row);
+        $('<td></td>').text(caseItem.Status).appendTo(row);
+        $('<td></td>').text(caseItem.Priority).appendTo(row);
+        $('<td></td>').text(caseItem.ContactId).appendTo(row);
+    });
 
-                cases.forEach(function(caseItem) {
-                    var row = $('<tr></tr>').appendTo(tbody);
-                    var caseNumberCell = $('<td></td>').appendTo(row);
-                    $('<a></a>')
-                        .text(caseItem.CaseNumber)
-                        .attr('href', 'https://suelemoliv-240111-119-demo.my.salesforce.com/' + caseItem.Id)
-                        .attr('target', '_blank')
-                        .appendTo(caseNumberCell);
-                    $('<td></td>').text(caseItem.Subject).appendTo(row);
-                    $('<td></td>').text(caseItem.Status).appendTo(row);
-                    $('<td></td>').text(caseItem.Priority).appendTo(row);
-                    $('<td></td>').text(caseItem.ContactId).appendTo(row);
+    casesContainer.append(table);
 
-                    var commentCell = $('<td class="comment-popup"></td>').appendTo(row);
-                    $('<span class="comment-popup-content"></span>').text("Latest comment: " + caseItem.LatestComment).appendTo(commentCell);
-                });
-
-                casesContainer.append(table);
-
-                $('#casesTable').DataTable();
-            }
-
+    $('#casesTable').DataTable(); // Initialize DataTables
+}
+            
             $('#statusFilter').on('change', function() {
                 var selectedStatus = $(this).val();
                 fetchCases(selectedStatus);
