@@ -33,36 +33,33 @@
     </header>
 
     <h1>Cases</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Case Number</th>
-                <th>Subject</th>
-                <th>Status</th>
-                <th>Priority</th>
-                <th>Contact ID</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% cases.forEach(function(caseItem) { %>
+    <div class="container">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td><%= caseItem.CaseNumber %></td>
-                    <td><%= caseItem.Subject %></td>
-                    <td><%= caseItem.Status %></td>
-                    <td><%= caseItem.Priority %></td>
-                    <td><%= caseItem.ContactId %></td>
+                    <th>Case Number</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Contact ID</th>
                 </tr>
-            <% }); %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% cases.forEach(function(caseItem) { %>
+                    <tr>
+                        <td><%= caseItem.CaseNumber %></td>
+                        <td><%= caseItem.Subject %></td>
+                        <td><%= caseItem.Status %></td>
+                        <td><%= caseItem.Priority %></td>
+                        <td><%= caseItem.ContactId %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-        console.log("Cases:", `<%= JSON.stringify(cases) %>`);
-    </script>
-    
 </body>
 </html>
