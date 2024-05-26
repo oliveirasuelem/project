@@ -47,17 +47,22 @@ connection.getConnection()
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// Your domain URL without the port
-const allowedOrigins = ["http://suelem.westeurope.cloudapp.azure.com:3000/admin/cases"];
-
-// CORS configuration
+// Enable CORS for your frontend domain
 app.use(
     cors({
-        origin: allowedOrigins,
+        origin: ["http://suelem.westeurope.cloudapp.azure.com:3000"],
         methods: ["GET", "POST", "DELETE", "PUT"],
         credentials: true,
     })
 );
+
+// Serve static files
+app.use(express.static('public'));
+
+// Define your routes and middleware as usual
+app.get('/', (req, res) => {
+    res.send('Hello, HTTP World!');
+});
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true}));
