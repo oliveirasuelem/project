@@ -47,7 +47,7 @@
             <tbody>
                 <% cases.forEach(function(caseItem) { %>
                     <tr>
-                        <td><%= caseItem.CaseNumber %></td>
+                        <td><a href="https://suelemoliv-240111-119-demo.my.salesforce.com/<%= caseItem.Id %>" target="_blank"><%= caseItem.CaseNumber %></a></td>
                         <td><%= caseItem.Subject %></td>
                         <td><%= caseItem.Status %></td>
                         <td><%= caseItem.Priority %></td>
