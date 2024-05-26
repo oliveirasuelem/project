@@ -88,57 +88,50 @@
         $(document).ready(function() {
             // Function to fetch cases from Salesforce
             function fetchCases(statusFilter) {
-                var apiUrl = 'https://suelemoliv-240111-119-demo.my.salesforce.com/services/data/v52.0/query/?q=SELECT+Id,CaseNumber,Subject,Status,Priority,ContactId,LatestComment+FROM+Case';
-                if (statusFilter !== 'All') {
-                    statusFilter = statusFilter.replace(/ /g, '%20');
-                    apiUrl += '+WHERE+Status=\'' + statusFilter + '\'';
-                }
-
-                var accessToken = 'qCPmrHijW3fIcIGO4XVjI2el';
+                var apiUrl = '/admin/cases'; // Use your server route to fetch cases
 
                 $.ajax({
                     url: apiUrl,
                     type: 'GET',
-                    headers: {
-                        'Authorization': 'Bearer ' + accessToken
-                    },
+                    data: { statusFilter: statusFilter },
                     success: function(response) {
-                        displayCases(response.records);
+                        displayCases(response);
                     },
                     error: function(xhr, status, error) {
                         console.error('Error fetching cases:', error);
                     }
                 });
             }
-// Function to display cases
-function displayCases(cases) {
-    var casesContainer = $('#casesContainer');
-    casesContainer.empty();
 
-    var table = $('<table id="casesTable" class="table"></table>');
-    var thead = $('<thead></thead>').appendTo(table);
-    var tbody = $('<tbody></tbody>').appendTo(table);
-    var headers = ['Case Number', 'Subject', 'Status', 'Priority', 'Contact ID'];
+            // Function to display cases
+            function displayCases(cases) {
+                var casesContainer = $('#casesContainer');
+                casesContainer.empty();
 
-    var headerRow = $('<tr></tr>').appendTo(thead);
-    headers.forEach(function(header) {
-        $('<th></th>').text(header).appendTo(headerRow);
-    });
+                var table = $('<table id="casesTable" class="table"></table>');
+                var thead = $('<thead></thead>').appendTo(table);
+                var tbody = $('<tbody></tbody>').appendTo(table);
+                var headers = ['Case Number', 'Subject', 'Status', 'Priority', 'Contact ID'];
 
-    cases.forEach(function(caseItem) {
-        var row = $('<tr></tr>').appendTo(tbody);
-        $('<td></td>').text(caseItem.CaseNumber).appendTo(row);
-        $('<td></td>').text(caseItem.Subject).appendTo(row);
-        $('<td></td>').text(caseItem.Status).appendTo(row);
-        $('<td></td>').text(caseItem.Priority).appendTo(row);
-        $('<td></td>').text(caseItem.ContactId).appendTo(row);
-    });
+                var headerRow = $('<tr></tr>').appendTo(thead);
+                headers.forEach(function(header) {
+                    $('<th></th>').text(header).appendTo(headerRow);
+                });
 
-    casesContainer.append(table);
+                cases.forEach(function(caseItem) {
+                    var row = $('<tr></tr>').appendTo(tbody);
+                    $('<td></td>').text(caseItem.CaseNumber).appendTo(row);
+                    $('<td></td>').text(caseItem.Subject).appendTo(row);
+                    $('<td></td>').text(caseItem.Status).appendTo(row);
+                    $('<td></td>').text(caseItem.Priority).appendTo(row);
+                    $('<td></td>').text(caseItem.ContactId).appendTo(row);
+                });
 
-    $('#casesTable').DataTable(); // Initialize DataTables
-}
-            
+                casesContainer.append(table);
+
+                $('#casesTable').DataTable(); // Initialize DataTables
+            }
+
             $('#statusFilter').on('change', function() {
                 var selectedStatus = $(this).val();
                 fetchCases(selectedStatus);
