@@ -77,7 +77,15 @@ app.use(
     })
 );
 
-  
+  // Middleware to check if user is admin
+function isAdmin(req, res, next) {
+    if (req.session.user && req.session.user.role === 'admin') {
+        next();
+    } else {
+        res.status(403).send('Forbidden');
+    }
+}
+
 
 app.use(express.static('public'));
 
@@ -85,9 +93,10 @@ app.set('view engine', 'ejs');
 
 // Define routes
 app.get('/', (req, res) => {
-    const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
-    res.render('index', { loginUsername });
+    const loginUser = req.session.user || null; // Check if the user is logged in
+    res.render('index', { loginUser });
 });
+
 
 app.get('/welcome', (req, res) => {
     // Check if the welcome message exists in the session
@@ -119,11 +128,11 @@ app.get('/booking', (req, res) => {
 
 //CRUD
 // Route to fetch products and render admin page
-app.get('/admin/products', async (req, res) => {
-    const loginUsername = req.session.user ? req.session.user.username : null;
+app.get('/admin/products', isAdmin, async (req, res) => {
+    const loginUser = req.session.user || null;
     try {
         const [products] = await connection.execute('SELECT * FROM products'); // Fetch all products from the database
-        res.render('admin/products', { products, loginUsername });
+        res.render('admin/products', { products, loginUser });
     } catch (err) {
         console.error('Error fetching products:', err); // Log the error details
         res.status(500).send('Error fetching products');
@@ -422,6 +431,7 @@ app.post('/saveData', [
 });
 
 
+//login and matching role
 app.post('/login', async (req, res) => {
     const { loginUsername, loginPassword } = req.body;
 
@@ -450,7 +460,7 @@ app.post('/login', async (req, res) => {
         }
 
         // Set up the session if login is successful
-        req.session.user = user;
+        req.session.user = { id: user.id, username: user.username, role: user.role };
         console.log(`User ${user.username} logged in successfully`);
 
         // Redirect to the welcome page with a welcome message
@@ -461,7 +471,6 @@ app.post('/login', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
 
 // Create a Nodemailer transporter
 const transporter = nodemailer.createTransport({
