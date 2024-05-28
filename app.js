@@ -93,8 +93,8 @@ app.set('view engine', 'ejs');
 
 // Define routes
 app.get('/', (req, res) => {
-    const loginUser = req.session.user || null; // Check if the user is logged in
-    res.render('index', { loginUser });
+    const loginUsername = req.session.user ? req.session.user.username : null; // Standardize variable name
+    res.render('index', { loginUsername });
 });
 
 
