@@ -93,10 +93,10 @@ app.set('view engine', 'ejs');
 
 // Define routes
 app.get('/', (req, res) => {
-    const loginUsername = req.session.username || null; // Adjust this based on your authentication logic
-    res.render('index', { loginUsername });
-  });
-  
+    const loginUser = req.session.user || null; // Check if the user is logged in
+    res.render('index', { loginUser });
+});
+
 
 app.get('/welcome', (req, res) => {
     // Check if the welcome message exists in the session
@@ -431,6 +431,7 @@ app.post('/saveData', [
 });
 
 
+//login and matching role
 app.post('/login', async (req, res) => {
     const { loginUsername, loginPassword } = req.body;
 
@@ -459,7 +460,7 @@ app.post('/login', async (req, res) => {
         }
 
         // Set up the session if login is successful
-        req.session.user = user;
+        req.session.user = { id: user.id, username: user.username, role: user.role };
         console.log(`User ${user.username} logged in successfully`);
 
         // Redirect to the welcome page with a welcome message
@@ -470,7 +471,6 @@ app.post('/login', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
 
 // Create a Nodemailer transporter
 const transporter = nodemailer.createTransport({
