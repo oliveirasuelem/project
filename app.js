@@ -323,9 +323,9 @@ app.get('/catalogue', (req, res) => {
     res.render('catalogue/catalogue', { loginUsername });
 });
 app.get('/login', (req, res) => {
-    
-    const registrationSuccess = false; 
-    res.render('login/login', { registrationSuccess });
+    const registrationSuccess = false;
+    const loginUsername = req.session.user ? req.session.user.username : null; // Retrieve login username from session
+    res.render('login/login', { registrationSuccess, loginUsername });
 });
 
 
