@@ -77,11 +77,13 @@ app.use(
     })
 );
 
-  // Middleware to check if user is admin
+// Middleware to check if user is admin
 function isAdmin(req, res, next) {
     if (req.session.user && req.session.user.role === 'admin') {
+        console.log('User is admin:', req.session.user);
         next();
     } else {
+        console.log('User is not admin or not logged in:', req.session.user);
         res.status(403).send('Forbidden');
     }
 }
