@@ -250,7 +250,7 @@ app.use((req, res, next) => {
 });
 
 // Route to fetch cases from Salesforce
-app.get('/admin/cases', async (req, res) => {
+app.get('/admin/cases', isAdmin, async (req, res) => {
     try {
         // Authenticate with Salesforce and obtain access token
         const accessToken = await salesforceAuth();
