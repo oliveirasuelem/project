@@ -96,8 +96,10 @@ app.set('view engine', 'ejs');
 // Define routes
 app.get('/', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Standardize variable name
-    res.render('index', { loginUsername });
+    const loginUserRole = req.session.user ? req.session.user.role : null; // Add this line to get the user's role
+    res.render('index', { loginUsername, loginUserRole }); // Pass loginUserRole to the view
 });
+
 
 
 app.get('/welcome', (req, res) => {
