@@ -119,12 +119,12 @@ app.get('/about', (req, res) => {
     res.render('about/about', { loginUsername });
 });
 
+
 app.get('/basket', (req, res) => {
-    const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
-
-    res.render('basket/basket');
+    const registrationSuccess = false;
+    const loginUsername = req.session.user ? req.session.user.username : null; // Retrieve login username from session
+    res.render('basket/basket', { registrationSuccess, loginUsername });
 });
-
 
 
 app.get('/booking', (req, res) => {
