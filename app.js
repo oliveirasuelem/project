@@ -129,15 +129,16 @@ app.get('/booking', (req, res) => {
 //CRUD
 // Route to fetch products and render admin page
 app.get('/admin/products', isAdmin, async (req, res) => {
-    const loginUser = req.session.user || null;
+    const loginUsername = req.session.user ? req.session.user.username : null;
     try {
-        const [products] = await connection.execute('SELECT * FROM products'); // Fetch all products from the database
-        res.render('admin/products', { products, loginUser });
+        const [products] = await connection.execute('SELECT * FROM products');
+        res.render('admin/products', { products, loginUsername });
     } catch (err) {
-        console.error('Error fetching products:', err); // Log the error details
+        console.error('Error fetching products:', err);
         res.status(500).send('Error fetching products');
     }
 });
+
 
 // Route to render the create product form
 app.get('/admin/products/create', (req, res) => {
