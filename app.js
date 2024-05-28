@@ -431,7 +431,6 @@ app.post('/saveData', [
 });
 
 
-//login and matching role
 app.post('/login', async (req, res) => {
     const { loginUsername, loginPassword } = req.body;
 
@@ -460,7 +459,7 @@ app.post('/login', async (req, res) => {
         }
 
         // Set up the session if login is successful
-        req.session.user = { id: user.id, username: user.username, role: user.role };
+        req.session.user = user;
         console.log(`User ${user.username} logged in successfully`);
 
         // Redirect to the welcome page with a welcome message
@@ -471,6 +470,7 @@ app.post('/login', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 // Create a Nodemailer transporter
 const transporter = nodemailer.createTransport({
