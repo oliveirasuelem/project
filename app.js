@@ -125,11 +125,10 @@ app.get('/about', (req, res) => {
 
 
 app.get('/basket', (req, res) => {
-    const registrationSuccess = false;
-    const loginUsername = req.session.user ? req.session.user.username : null; // Retrieve login username from session
-    res.render('basket/basket', { registrationSuccess, loginUsername });
+    const loginUsername = req.session.user ? req.session.user.username : null; // Standardize variable name
+    const loginUserRole = req.session.user ? req.session.user.role : null; // Add this line to get the user's role
+    res.render('basket/basket', { loginUsername, loginUserRole });
 });
-
 
 app.get('/booking', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
