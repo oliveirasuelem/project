@@ -108,10 +108,14 @@ app.get('/welcome', (req, res) => {
 
     // Check if the user is logged in and get the username
     const loginUsername = req.session.user ? req.session.user.username : null;
+    
+    // Get the user role from the session, provide a default value if undefined
+    const loginUserRole = req.session.loginUserRole || 'customer';
 
-    // Render the welcome page and pass the welcome message and login username
-    res.render('welcome/welcome', { welcomeMessage, loginUsername });
+    // Render the welcome page and pass the welcome message, login username, and user role
+    res.render('welcome/welcome', { welcomeMessage, loginUsername, loginUserRole });
 });
+
 
 
 app.get('/about', (req, res) => {
