@@ -120,6 +120,8 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/basket', (req, res) => {
+    const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
+
     res.render('basket/basket');
 });
 
