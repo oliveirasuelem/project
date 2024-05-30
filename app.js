@@ -248,6 +248,7 @@ app.delete('/admin/products/:id', async (req, res) => {
 });
 
 //Route to manage users
+// Route to manage users
 app.get('/admin/users', isAdmin, async (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null;
     try {
@@ -260,22 +261,20 @@ app.get('/admin/users', isAdmin, async (req, res) => {
 });
 
 // Route to render the create user form
-app.get('/admin/users/createusers', (req, res) => {
-    // Render the create product form
+app.get('/admin/users/create', isAdmin, (req, res) => {
     res.render('admin/createusers');
 });
 
 // Route to handle the creation of a new user
-app.post('/admin/createusers', async (req, res) => {
+app.post('/admin/users/create', isAdmin, async (req, res) => {
     try {
         const { name, username, email, phone_number, birth_date, role } = req.body;
 
-              // Validate input (ensure all fields are provided)
-              if (!name || !username || !email || !phone_number || !birth_date || !role) {
-                return res.status(400).send('All fields are required');
-            }
-    
-  
+        // Validate input
+        if (!name || !username || !email || !phone_number || !birth_date || !role) {
+            return res.status(400).send('All fields are required');
+        }
+
         // Insert the new user into the database
         const [result] = await connection.execute(
             'INSERT INTO users (name, username, email, phone_number, birth_date, role) VALUES (?, ?, ?, ?, ?, ?)',
@@ -283,7 +282,6 @@ app.post('/admin/createusers', async (req, res) => {
         );
 
         if (result.affectedRows > 0) {
-            // Product added successfully
             res.redirect('/admin/users');
         } else {
             res.status(500).send('Failed to add user');
@@ -294,19 +292,17 @@ app.post('/admin/createusers', async (req, res) => {
     }
 });
 
-  
-// Route to render the edit user form and pass the product data
-app.get('/admin/users/edituser/:id', async (req, res) => {
+// Route to render the edit user form and pass the user data
+app.get('/admin/users/edit/:id', isAdmin, async (req, res) => {
     try {
         const userId = req.params.id;
         const [userRows] = await connection.execute('SELECT * FROM users WHERE id = ?', [userId]);
-        const user = userRows[0]; // 
-      
+        const user = userRows[0];
+
         if (!user) {
             return res.status(404).send('User not found');
         }
-      
-        // Render the edit User form and pass the product data
+
         res.render('admin/edituser', { user });
     } catch (err) {
         console.error('Error fetching user:', err);
@@ -315,7 +311,7 @@ app.get('/admin/users/edituser/:id', async (req, res) => {
 });
 
 // Route to handle updating an existing user
-app.post('/admin/user/edituser/:id', async (req, res) => {
+app.put('/admin/users/edit/:id', isAdmin, async (req, res) => {
     try {
         const userId = req.params.id;
         const { name, username, email, phone_number, birth_date, role } = req.body;
@@ -323,11 +319,10 @@ app.post('/admin/user/edituser/:id', async (req, res) => {
         // Perform the update operation in the database
         const [result] = await connection.execute(
             'UPDATE users SET name = ?, username = ?, email = ?, phone_number = ?, birth_date = ?, role = ? WHERE id = ?',
-            [name, username, email, phone_number, birth_date, role]
+            [name, username, email, phone_number, birth_date, role, userId]
         );
 
         if (result.affectedRows > 0) {
-            // User updated successfully
             res.redirect('/admin/users');
         } else {
             res.status(500).send('Failed to update user');
@@ -339,8 +334,7 @@ app.post('/admin/user/edituser/:id', async (req, res) => {
 });
 
 // Route to handle delete user
-
-app.delete('/admin/user/:id', async (req, res) => {
+app.delete('/admin/users/:id', isAdmin, async (req, res) => {
     try {
         const userId = req.params.id;
         const [result] = await connection.execute('DELETE FROM users WHERE id = ?', [userId]);
