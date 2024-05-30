@@ -247,8 +247,7 @@ app.delete('/admin/products/:id', async (req, res) => {
     }
 });
 
-//Route to manage users
-// Route to manage users
+// Route to render the users list
 app.get('/admin/users', isAdmin, async (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null;
     try {
@@ -261,16 +260,16 @@ app.get('/admin/users', isAdmin, async (req, res) => {
 });
 
 // Route to render the create user form
-app.get('/admin/users/create', isAdmin, (req, res) => {
+app.get('/admin/users/createusers', isAdmin, (req, res) => {
     res.render('admin/createusers');
 });
 
 // Route to handle the creation of a new user
-app.post('/admin/users/create', isAdmin, async (req, res) => {
+app.post('/admin/users/createusers', isAdmin, async (req, res) => {
     try {
         const { name, username, email, phone_number, birth_date, role } = req.body;
 
-        // Validate input
+        // Validate input (ensure all fields are provided)
         if (!name || !username || !email || !phone_number || !birth_date || !role) {
             return res.status(400).send('All fields are required');
         }
@@ -282,6 +281,7 @@ app.post('/admin/users/create', isAdmin, async (req, res) => {
         );
 
         if (result.affectedRows > 0) {
+            // User added successfully
             res.redirect('/admin/users');
         } else {
             res.status(500).send('Failed to add user');
@@ -293,7 +293,7 @@ app.post('/admin/users/create', isAdmin, async (req, res) => {
 });
 
 // Route to render the edit user form and pass the user data
-app.get('/admin/users/edit/:id', isAdmin, async (req, res) => {
+app.get('/admin/users/edituser/:id', isAdmin, async (req, res) => {
     try {
         const userId = req.params.id;
         const [userRows] = await connection.execute('SELECT * FROM users WHERE id = ?', [userId]);
@@ -303,6 +303,7 @@ app.get('/admin/users/edit/:id', isAdmin, async (req, res) => {
             return res.status(404).send('User not found');
         }
 
+        // Render the edit user form and pass the user data
         res.render('admin/edituser', { user });
     } catch (err) {
         console.error('Error fetching user:', err);
@@ -311,7 +312,7 @@ app.get('/admin/users/edit/:id', isAdmin, async (req, res) => {
 });
 
 // Route to handle updating an existing user
-app.put('/admin/users/edit/:id', isAdmin, async (req, res) => {
+app.post('/admin/users/edituser/:id', isAdmin, async (req, res) => {
     try {
         const userId = req.params.id;
         const { name, username, email, phone_number, birth_date, role } = req.body;
@@ -323,6 +324,7 @@ app.put('/admin/users/edit/:id', isAdmin, async (req, res) => {
         );
 
         if (result.affectedRows > 0) {
+            // User updated successfully
             res.redirect('/admin/users');
         } else {
             res.status(500).send('Failed to update user');
@@ -333,7 +335,7 @@ app.put('/admin/users/edit/:id', isAdmin, async (req, res) => {
     }
 });
 
-// Route to handle delete user
+// Route to handle deleting a user
 app.delete('/admin/users/:id', isAdmin, async (req, res) => {
     try {
         const userId = req.params.id;
@@ -349,6 +351,8 @@ app.delete('/admin/users/:id', isAdmin, async (req, res) => {
         res.status(500).send('Error deleting user');
     }
 });
+
+
 
 // Middleware to handle CORS
 app.use((req, res, next) => {
