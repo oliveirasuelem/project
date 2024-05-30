@@ -247,6 +247,116 @@ app.delete('/admin/products/:id', async (req, res) => {
     }
 });
 
+//Route to manage users
+app.get('/admin/users', isAdmin, async (req, res) => {
+    const loginUsername = req.session.user ? req.session.user.username : null;
+    try {
+        const [users] = await connection.execute('SELECT * FROM users');
+        res.render('admin/users', { users, loginUsername });
+    } catch (err) {
+        console.error('Error fetching users:', err);
+        res.status(500).send('Error fetching users');
+    }
+});
+
+
+// Route to render the create user form
+app.get('/admin/createusers', (req, res) => {
+    // Render the create product form
+    res.render('admin/createusers');
+});
+
+// Route to handle the creation of a new user
+app.post('/admin/createusers', async (req, res) => {
+    try {
+        const { name, username, email, phone_number, birth_date, role } = req.body;
+
+              // Validate input (ensure all fields are provided)
+              if (!name || !username || !email || !phone_number || !birth_date || !role) {
+                return res.status(400).send('All fields are required');
+            }
+    
+  
+        // Insert the new user into the database
+        const [result] = await connection.execute(
+            'INSERT INTO users (name, username, email, phone_number, birth_date, role) VALUES (?, ?, ?, ?, ?, ?)',
+            [name, username, email, phone_number, birth_date, role]
+        );
+
+        if (result.affectedRows > 0) {
+            // Product added successfully
+            res.redirect('/admin/users');
+        } else {
+            res.status(500).send('Failed to add user');
+        }
+    } catch (error) {
+        console.error('Error creating user:', error);
+        res.status(500).send('Error creating user');
+    }
+});
+
+  
+// Route to render the edit user form and pass the product data
+app.get('/admin/users/edituser/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const [userRows] = await connection.execute('SELECT * FROM users WHERE id = ?', [userId]);
+        const user = userRows[0]; // 
+      
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+      
+        // Render the edit User form and pass the product data
+        res.render('admin/edituser', { user });
+    } catch (err) {
+        console.error('Error fetching user:', err);
+        res.status(500).send('Error fetching user');
+    }
+});
+
+// Route to handle updating an existing user
+app.post('/admin/user/edituser/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { name, username, email, phone_number, birth_date, role } = req.body;
+
+        // Perform the update operation in the database
+        const [result] = await connection.execute(
+            'UPDATE users SET name = ?, username = ?, email = ?, phone_number = ?, birth_date = ?, role = ? WHERE id = ?',
+            [name, username, email, phone_number, birth_date, role]
+        );
+
+        if (result.affectedRows > 0) {
+            // User updated successfully
+            res.redirect('/admin/users');
+        } else {
+            res.status(500).send('Failed to update user');
+        }
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).send('Error updating user');
+    }
+});
+
+// Route to handle delete user
+
+app.delete('/admin/user/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const [result] = await connection.execute('DELETE FROM users WHERE id = ?', [userId]);
+
+        if (result.affectedRows > 0) {
+            res.redirect('/admin/users');
+        } else {
+            res.status(404).send('User not found');
+        }
+    } catch (err) {
+        console.error('Error deleting user:', err);
+        res.status(500).send('Error deleting user');
+    }
+});
+
 // Middleware to handle CORS
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
