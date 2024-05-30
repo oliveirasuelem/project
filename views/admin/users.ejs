@@ -36,22 +36,23 @@
     </nav>
   </header>
   <main class="container mt-4">
-    <h1>Product Catalog</h1>
-    <a href="/admin/products/create" class="btn btn-success mb-3">Create New Product</a>
+    <h1>Contacts User</h1>
+    <a href="/admin/users/createuser" class="btn btn-success mb-3">Create New User</a>
 
     <!-- Search Bar -->
-    <input type="text" id="searchBar" class="form-control mb-3" placeholder="Search products...">
+    <input type="text" id="searchBar" class="form-control mb-3" placeholder="Search users...">
 
     <table class="table table-striped">
       <thead>
         <tr>
           <th>ID</th>
           <th>Name</th>
-          <th>Description</th>
-          <th>Price</th>
-          <th>Image URL</th>
-          <th>Keywords</th>
-          <th>Actions</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Phone number</th>
+          <th>Birthday</th>
+          <th>Role</th>
+          <th>Actions/th>
         </tr>
       </thead>
       <tbody id="userTableBody">
@@ -66,7 +67,7 @@
             <td><%= user.role %></td>
             <td>
               <!-- Edit Button -->
-              <a href="/admin/users/edit/<%= user.id %>" class="btn btn-primary">Edit</a>
+              <a href="/admin/users/edituser/<%= user.id %>" class="btn btn-primary">Edit</a>
               
               <!-- Delete Form -->
               <form action="/admin/users/<%= user.id %>?_method=DELETE" method="POST" class="d-inline" onsubmit="return confirmDelete()">
