@@ -259,9 +259,8 @@ app.get('/admin/users', isAdmin, async (req, res) => {
     }
 });
 
-
 // Route to render the create user form
-app.get('/admin/createusers', (req, res) => {
+app.get('/admin/users/createusers', (req, res) => {
     // Render the create product form
     res.render('admin/createusers');
 });
