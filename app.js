@@ -97,7 +97,7 @@ app.set('view engine', 'ejs');
 
 app.get('/chat', (req, res) => {
     // Render the create product form
-    res.render('/chat');
+    res.render('chat');
 });
 
 app.get('/', (req, res) => {
