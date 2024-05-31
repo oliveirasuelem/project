@@ -94,6 +94,12 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 // Define routes
+
+app.get('/chat', (req, res) => {
+    // Render the create product form
+    res.render('chat');
+});
+
 app.get('/', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Standardize variable name
     const loginUserRole = req.session.user ? req.session.user.role : null; // Add this line to get the user's role
