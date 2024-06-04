@@ -1,4 +1,3 @@
-<!-- cases.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +47,6 @@
                     <option value="Working">Working</option>
                     <option value="Waiting on Customer">Waiting on Customer</option>
                     <option value="Closed">Closed</option>
-                    
                 </select>
             </div>
             <div class="col-md-3">
@@ -85,29 +83,31 @@
         </table>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Include DataTables JavaScript -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <script>
-        $(document).ready( function () {
+        $(document).ready(function () {
             // Initialize DataTable
             var table = $('#casesTable').DataTable();
 
-            // Add event listener for status filter
-            $('#statusFilter').on('change', function () {
-                table.column(2).search(this.value).draw();
-            });
+            function applyFilters() {
+                var status = $('#statusFilter').val();
+                var priority = $('#priorityFilter').val();
 
-            // Add event listener for priority filter
-            $('#priorityFilter').on('change', function () {
-                table.column(4).search(this.value).draw();
-});
-});
-//Reference:https://www.w3schools.com/js/js_htmldom_eventlistener.asp
-// https://radbahi.medium.com/implementing-a-basic-filter-function-in-javascript-d0d7607a5331
-</script>
+                // Filter based on both status and priority
+                table
+                    .columns(2).search(status)
+                    .columns(3).search(priority)
+                    .draw();
+            }
+
+            // Add event listeners for status and priority filters
+            $('#statusFilter, #priorityFilter').on('change', applyFilters);
+        });
+    </script>
 
 </body>
 </html>

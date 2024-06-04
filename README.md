@@ -1,14 +1,16 @@
 ﻿# All Nails Salon Website
 
 # Overview 
-All Nails Studio is a web application designed for a nail salon. It allows customers to browse services and products, make bookings, contact the business for support, and manage their profiles. We have enhanced the web application by adding an Admin Portal: Admin users can manage products, users, and view cases from Salesforce.
+All Nails Studio is a web application specifically designed for a nail salon, offering an easy and engaging experience for customers. Users can browse various services and products, book appointments, contact the salon for support, create a profile and manage their password.
+
+This version is an enhanced version of the website which we've added an Admin Portal. This allows admin users to see products from the database, edit product information, create new products and delete products. The same CRUD is available for users contacts created in the portal. We have also added an integration with Salesforce for Chat funcionality in the Home page, and in the Admin Portal we have a dedicated page retrieving Cases created in Salesforce by the customers.
 
 # Features
 - User Authentication and Authorization
 - Product Management (CRUD)
 - User Management (CRUD)
 - Booking System
-- Salesforce Integration
+- Salesforce Integration with Cases and Embedded Chat funcionality
 - Password Reset Functionality
 - User Sessions and Cookies
 - CORS enabled for frontend integration
