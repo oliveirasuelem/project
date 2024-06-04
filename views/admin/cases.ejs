@@ -93,19 +93,26 @@
             // Initialize DataTable
             var table = $('#casesTable').DataTable();
 
-            function applyFilters() {
-                var status = $('#statusFilter').val();
-                var priority = $('#priorityFilter').val();
+            // Custom filtering function
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    var status = $('#statusFilter').val();
+                    var priority = $('#priorityFilter').val();
+                    var caseStatus = data[2]; // Use data for the status column
+                    var casePriority = data[3]; // Use data for the priority column
 
-                // Filter based on both status and priority
-                table
-                    .columns(2).search(status)
-                    .columns(3).search(priority)
-                    .draw();
-            }
+                    if ((status === "" || caseStatus === status) &&
+                        (priority === "" || casePriority === priority)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
 
             // Add event listeners for status and priority filters
-            $('#statusFilter, #priorityFilter').on('change', applyFilters);
+            $('#statusFilter, #priorityFilter').on('change', function () {
+                table.draw();
+            });
         });
     </script>
 
