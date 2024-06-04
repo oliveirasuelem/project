@@ -110,3 +110,9 @@ Once you are authenticated, you will be able to open the admin portal URL: admin
 - Passwords are hashed using bcrypt.
 - Sessions are managed securely.
 - Access control implemented for admin routes.
+
+# Future enhancements
+
+For future improvements, we would like to implement the option for an admin user to login as admin or customer view. 
+
+We would like to make the nav bar "Admin Portal" to appear in the page as soon as the admin log in. Currently it takes the admin to login, then visit an admin route and then when back to the Home page, the nav bar will be displaying the Admin Portal.
