@@ -82,9 +82,9 @@ Once you are authenticated, you will be able to open the admin portal URL: admin
 - Forgot Password: Users can request a password reset link via email.
 
 # Admin Functionality
-- Product Management: Admins can add, edit, delete, and view products.
-- User Management: Admins can add, edit, delete, and view users.
-- Salesforce Cases: Admins can view cases fetched from Salesforce.
+- Product Management: Admins can add, edit, delete, and view products. Admin can also search for products by name, description and keyword.
+- User Management: Admins can add, edit, delete, and view users. Admin can alsoo search users in the search bar.
+- Salesforce Cases: Admins can view cases fetched from Salesforce. Each case number is hyperlink directly with the Salesforce portal.
 
 # Routes
 - /: Home page
