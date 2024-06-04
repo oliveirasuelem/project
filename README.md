@@ -87,24 +87,24 @@ Once you are authenticated, you will be able to open the admin portal URL: admin
 - Salesforce Cases: Admins can view cases fetched from Salesforce.
 
 # Routes
-/: Home page
-/welcome: Welcome page
-/about: About page
-/basket: Basket page
-/booking: Booking page
-/admin/products: View products (Admin only)
-/admin/products/create: Create product (Admin only)
-/admin/products/edit/:id: Edit product (Admin only)
-/admin/users: View users (Admin only)
-/admin/createuser: Create user (Admin only)
-/admin/users/edituser/:id: Edit user (Admin only)
-/admin/cases: View Salesforce cases (Admin only)
-/contact: Contact page
-/catalogue: Catalogue page
-/login: Login page
-/forgotPassword: Forgot password page
-/resetPassword: Reset password page
-/search: Search page
+- /: Home page
+- /welcome: Welcome page
+- /about: About page
+- /basket: Basket page
+- /booking: Booking page
+- /admin/products: View products (Admin only)
+- /admin/products/create: Create product (Admin only)
+- /admin/products/edit/:id: Edit product (Admin only)
+- /admin/users: View users (Admin only)
+- /admin/createuser: Create user (Admin only)
+- /admin/users/edituser/:id: Edit user (Admin only)
+- /admin/cases: View Salesforce cases (Admin only)
+- /contact: Contact page
+- /catalogue: Catalogue page
+- /login: Login page
+- /forgotPassword: Forgot password page
+- /resetPassword: Reset password page
+- /search: Search page
 
 # Security
 - Passwords are hashed using bcrypt.
