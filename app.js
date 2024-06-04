@@ -266,7 +266,7 @@ app.get('/admin/users', isAdmin, async (req, res) => {
 });
 
 // Route to render the create user form
-app.get('/admin/users/createusers', isAdmin, (req, res) => {
+app.get('/admin/createusers', isAdmin, (req, res) => {
     res.render('admin/createusers');
 });
 

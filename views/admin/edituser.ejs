@@ -31,16 +31,7 @@
         <label for="birth_date">Birthday</label>
         <input type="date" class="form-control" id="birth_date" name="birth_date" required>
     </div>
-    
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Assuming user.birth_date is in the format "Sat May 18 1991 00:00:00 GMT+0000 (Coordinated Universal Time)"
-        const birthDateString = '<%= user.birth_date %>';
-        const birthDate = new Date(birthDateString);
-        const formattedDate = birthDate.toISOString().split('T')[0];
-        document.getElementById('birth_date').value = formattedDate;
-      });
-    </script>
+  
       <div class="form-group">
         <label for="role">Role</label>
         <select class="form-control" id="role" name="role" required>
