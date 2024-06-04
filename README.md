@@ -40,7 +40,8 @@ This version is an enhanced version of the website which we've added an Admin Po
 
 1. Clone the repository:
 git clone https://github.com/oliveirasuelem/project.git
-  cd project
+
+cd project
 
 3. Install dependencies:
 npm install
