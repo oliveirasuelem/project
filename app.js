@@ -724,6 +724,7 @@ app.get('/logout', (req, res) => {
     if (req.session.user) {
         // Get the username from the session
         const username = req.session.user.username;
+        const loginUserRole = req.session.user ? req.session.user.role : null; // Add this line to get the user's role
         console.log(`User ${username} logged out`);                                    // Log the username who logged out
         const goodbyeMessage = `Goodbye, ${username}. We hope to see you again soon!`; // Create the goodbye message
         req.session.destroy();                                                         // Destroy the session
