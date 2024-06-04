@@ -39,8 +39,8 @@ This version is an enhanced version of the website which we've added an Admin Po
 # Installation
 
 1. Clone the repository:
-git clone https://github.com/yourusername/all-nails-studio.git
-cd all-nails-studio
+git clone https://github.com/oliveirasuelem/project.git
+cd project
 
 2. Install dependencies:
 npm install
