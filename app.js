@@ -271,7 +271,7 @@ app.get('/admin/createuser', isAdmin, (req, res) => {
 });
 
 // Route to handle the creation of a new user
-app.post('/admin/users/createuser', isAdmin, async (req, res) => {
+app.post('/admin/createuser', isAdmin, async (req, res) => {
     try {
         const { name, username, email, phone_number, birth_date, role } = req.body;
 
