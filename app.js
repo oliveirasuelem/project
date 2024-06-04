@@ -266,12 +266,12 @@ app.get('/admin/users', isAdmin, async (req, res) => {
 });
 
 // Route to render the create user form
-app.get('/admin/createusers', isAdmin, (req, res) => {
-    res.render('admin/createusers');
+app.get('/admin/users/createuser', isAdmin, (req, res) => {
+    res.render('admin/createuser');
 });
 
 // Route to handle the creation of a new user
-app.post('/admin/users/createusers', isAdmin, async (req, res) => {
+app.post('/admin/users/createuser', isAdmin, async (req, res) => {
     try {
         const { name, username, email, phone_number, birth_date, role } = req.body;
 
