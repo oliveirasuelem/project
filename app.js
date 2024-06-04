@@ -87,7 +87,7 @@ function isAdmin(req, res, next) {
         res.status(403).send('Forbidden');
     }
 }
-
+//Reference: https://stackoverflow.com/questions/24666331/is-verifying-whether-a-user-is-an-admin-based-on-req-user-secure
 
 app.use(express.static('public'));
 
@@ -358,7 +358,7 @@ app.delete('/admin/users/:id', isAdmin, async (req, res) => {
     }
 });
 
-
+//Reference SQL update queries - https://www.w3schools.com/sql/sql_update.asp//
 
 // Middleware to handle CORS
 app.use((req, res, next) => {
@@ -396,8 +396,12 @@ app.get('/admin/cases', isAdmin, async (req, res) => {
     }
 });
 
+//Salesforce Dev Documentation: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_what_is_rest_api.htm
+//https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/intro_curl.htm
+//https://help.salesforce.com/s/articleView?id=sf.snapins_chat_get_code.htm&type=5
 
 
+//Login authentication was done by a different member of my previous project//
 app.get('/contact', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
     res.render('contact/contact', { loginUsername });
@@ -552,9 +556,10 @@ app.post('/saveData', [
         registrationInProgress = false;
     }
 });
-
+//end of the user authentication done in previous project
 
 //login and matching role
+//edit version to include role specially for this project
 app.post('/login', async (req, res) => {
     const { loginUsername, loginPassword } = req.body;
 
@@ -595,7 +600,11 @@ app.post('/login', async (req, res) => {
     }
 });
 
+//Reference: https://www.geeksforgeeks.org/how-to-match-username-and-password-in-database-in-sql///
+
 // Create a Nodemailer transporter
+//created in the previous project to handle web form requestes.
+//Reference: https://nodemailer.com/smtp/
 const transporter = nodemailer.createTransport({
     service: 'hotmail',
     auth: {
@@ -607,6 +616,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+//Forgot password - dealt in my previous project by a colleague//
 app.post('/forgotPassword', async (req, res) => {
     const { email } = req.body;
 
@@ -679,10 +689,7 @@ app.post('/resetPassword', async (req, res) => {
     }
 });
 
-
-
-
-
+//Web form submissions
 // New route for handling contact form submission
 app.post('/contact', (req, res) => {
     // Handle the form submission here
@@ -711,7 +718,7 @@ app.post('/contact', (req, res) => {
 });
 
 
-
+//Logout user dealt in previous project//
 app.get('/logout', (req, res) => {
     // Check if the user is logged in
     if (req.session.user) {
