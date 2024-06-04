@@ -40,12 +40,12 @@ This version is an enhanced version of the website which we've added an Admin Po
 
 1. Clone the repository:
 git clone https://github.com/oliveirasuelem/project.git
-cd project
+  cd project
 
-2. Install dependencies:
+3. Install dependencies:
 npm install
 
-3. Set up the MySQL database:
+4. Set up the MySQL database:
 
 Create a database named project.
 Import the SQL schema provided in the repository to create the required tables.
