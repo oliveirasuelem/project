@@ -23,6 +23,7 @@ const jsforce = require('jsforce');
 
 
 const crypto = require('crypto');
+const { log } = require('console');
 const passwordResetTokens = new Map();// Creating a map to store password reset tokens
 function generateToken() {
     return crypto.randomBytes(32).toString('hex'); // Function generating a random token
@@ -121,7 +122,8 @@ app.get('/welcome', (req, res) => {
 
 app.get('/about', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
-    res.render('about/about', { loginUsername });
+    const loginUserRole = req.session.user ? req.session.user.role : null; // Add this line to get the user's role
+    res.render('about/about', { loginUsername, loginUserRole });
 });
 
 
@@ -133,7 +135,8 @@ app.get('/basket', (req, res) => {
 
 app.get('/booking', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
-    res.render('booking/booking', { loginUsername });
+    const loginUserRole = req.session.user ? req.session.user.role : null; // Add this line to get the user's role
+    res.render('booking/booking', { loginUsername, loginUserRole });
 });
 
 //CRUD
@@ -399,7 +402,8 @@ app.get('/admin/cases', isAdmin, async (req, res) => {
 //Login authentication was done by a different member of my previous project//
 app.get('/contact', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
-    res.render('contact/contact', { loginUsername });
+    const loginUserRole = req.session.user ? req.session.user.role : null; // Add this line to get the user's role
+    res.render('contact/contact', { loginUsername, loginUserRole });
 });
 
 app.get('/descriptiongallery/baseCoat', (req, res) => {
@@ -435,7 +439,8 @@ app.get('/descriptiongallery/polishremover', (req, res) => {
 
 app.get('/catalogue', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
-    res.render('catalogue/catalogue', { loginUsername });
+    const loginUserRole = req.session.user ? req.session.user.role : null; // Add this line to get the user's role
+    res.render('catalogue/catalogue', { loginUsername, loginUserRole });
 });
 app.get('/login', (req, res) => {
     const registrationSuccess = false;
@@ -731,16 +736,17 @@ app.get('/logout', (req, res) => {
 
 app.get('/services', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
-    res.render('services/services', { loginUsername });
+    const loginUserRole = req.session.user ? req.session.user.role : null; // Add this line to get the user's role
+    res.render('services/services', { loginUsername, loginUserRole  });
 });
 
 
 
 app.get('/team', (req, res) => {
     const loginUsername = req.session.user ? req.session.user.username : null; // Check if the user is logged in and get the username
-    res.render('team/team', { loginUsername });
+    const loginUserRole = req.session.user ? req.session.user.role : null; // Add this line to get the user's role
+    res.render('team/team', { loginUsername, loginUserRole  });
 });
-
 
 app.get('*', (req, res) => {
     res.status(404).send('Resource not found');
